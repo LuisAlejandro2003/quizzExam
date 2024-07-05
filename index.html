@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verbos Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        #quiz-container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #333;
+            border-radius: 10px;
+            background-color: #1e1e1e;
+        }
+        #question {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+        .answer-input {
+            width: calc(100% - 22px);
+            padding: 10px;
+            font-size: 1em;
+            background-color: #333;
+            color: #e0e0e0;
+            border: 1px solid #444;
+            margin-bottom: 10px;
+        }
+        #feedback {
+            margin-top: 10px;
+            font-size: 1em;
+        }
+        #next-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        #next-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div id="quiz-container">
+        <div id="question"></div>
+        <input type="text" id="present" class="answer-input" placeholder="Presente">
+        <input type="text" id="past" class="answer-input" placeholder="Pasado">
+        <input type="text" id="participle" class="answer-input" placeholder="Participio">
+        <div id="feedback"></div>
+        <button id="next-button" onclick="checkAnswer()">Verificar</button>
+    </div>
+
+    <script>
+        const verbs = [
+            { question: "communicate, make understandable", present: "get something across/over", past: "got something across/over", participle: "gotten something across/over" },
+            { question: "understand, find the answer", present: "figure something out", past: "figured something out", participle: "figured something out" },
+            { question: "quit a class, school etc", present: "drop out", past: "dropped out", participle: "dropped out" },
+            { question: "eat at a restaurant", present: "eat out", past: "ate out", participle: "eaten out" },
+            { question: "eventually reach/do/decide", present: "end up", past: "ended up", participle: "ended up" },
+            { question: "break into pieces", present: "fall apart", past: "fell apart", participle: "fallen apart" },
+            { question: "fall to the ground", present: "fall down", past: "fell down", participle: "fallen down" },
+            { question: "separate from an interior", present: "fall out", past: "fell out", participle: "fallen out" },
+            { question: "(of hair, teeth) become loose and unattached", present: "fall out", past: "fell out", participle: "fallen out" },
+            { question: "to write information in blanks. (Br.E.)", present: "fill something in", past: "filled something in", participle: "filled something in" },
+            { question: "to write information in blanks (N.Amer.)", present: "fill something out", past: "filled something out", participle: "filled something out" },
+            { question: "fill to the top", present: "fill something up", past: "filled something up", participle: "filled something up" },
+            { question: "discover", present: "find something out", past: "found something out", participle: "found something out" },
+            { question: "like each other", present: "get along/on", past: "got along/on", participle: "gotten along/on" },
+            { question: "have mobility", present: "get around", past: "got around", participle: "gotten around" }
+        ];
+
+        let currentQuestionIndex = 0;
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function loadQuestion() {
+            if (currentQuestionIndex >= verbs.length) {
+                document.getElementById('quiz-container').innerHTML = "<h2>¡Felicidades! Has completado el quiz.</h2>";
+                return;
+            }
+            const currentQuestion = verbs[currentQuestionIndex];
+            document.getElementById('question').textContent = currentQuestion.question;
+            document.getElementById('present').value = '';
+            document.getElementById('past').value = '';
+            document.getElementById('participle').value = '';
+            document.getElementById('feedback').textContent = '';
+        }
+
+        function checkAnswer() {
+            const presentInput = document.getElementById('present').value.trim().toLowerCase();
+            const pastInput = document.getElementById('past').value.trim().toLowerCase();
+            const participleInput = document.getElementById('participle').value.trim().toLowerCase();
+            
+            const correctPresent = verbs[currentQuestionIndex].present.toLowerCase();
+            const correctPast = verbs[currentQuestionIndex].past.toLowerCase();
+            const correctParticiple = verbs[currentQuestionIndex].participle.toLowerCase();
+            
+            if (presentInput === correctPresent && pastInput === correctPast && participleInput === correctParticiple) {
+                document.getElementById('feedback').textContent = '¡Correcto!';
+                currentQuestionIndex++;
+                setTimeout(loadQuestion, 1000);
+            } else {
+                document.getElementById('feedback').textContent = 'Respuesta incorrecta. Inténtalo de nuevo.';
+            }
+        }
+
+        window.onload = () => {
+            shuffle(verbs);
+            loadQuestion();
+        }
+    </script>
+</body>
+</html>
